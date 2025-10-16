@@ -3,7 +3,7 @@ const fetch = require('node-fetch');
 const { PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET } = process.env;
 const base = "https://api-m.sandbox.paypal.com";
 
-// Hàm tạo Access Token (giống file trên)
+// Hàm tạo access token
 async function generateAccessToken() {
     const auth = Buffer.from(`${PAYPAL_CLIENT_ID}:${PAYPAL_CLIENT_SECRET}`).toString("base64");
     const response = await fetch(`${base}/v1/oauth2/token`, {
@@ -15,7 +15,7 @@ async function generateAccessToken() {
     return data.access_token;
 }
 
-// Hàm chính
+// Hàm main
 module.exports = async (req, res) => {
     if (req.method !== 'POST') return res.status(405).end();
 

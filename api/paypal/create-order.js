@@ -3,7 +3,7 @@ const fetch = require('node-fetch');
 const { PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET } = process.env;
 const base = "https://api-m.sandbox.paypal.com";
 
-// Hàm để tạo Access Token
+// Hàm tạo Access Token
 async function generateAccessToken() {
     const auth = Buffer.from(`${PAYPAL_CLIENT_ID}:${PAYPAL_CLIENT_SECRET}`).toString("base64");
     const response = await fetch(`${base}/v1/oauth2/token`, {
@@ -23,9 +23,9 @@ module.exports = async (req, res) => {
         const { cart } = req.body;
         const accessToken = await generateAccessToken();
 
-        // Tính tổng tiền từ giỏ hàng (QUAN TRỌNG: PayPal thường hoạt động tốt nhất với USD)
+        // Tính tổng tiền từ giỏ hàng
         let totalVND = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-        let totalUSD = (totalVND / 25000).toFixed(2); // Tạm quy đổi sang USD
+        let totalUSD = (totalVND / 25000).toFixed(2); // Quy đổi USD
 
         const url = `${base}/v2/checkout/orders`;
         const payload = {
@@ -37,7 +37,6 @@ module.exports = async (req, res) => {
                 },
             }],
         };
-
         const response = await fetch(url, {
             method: "POST",
             headers: {
@@ -46,7 +45,6 @@ module.exports = async (req, res) => {
             },
             body: JSON.stringify(payload),
         });
-
         const data = await response.json();
         res.status(200).json({ id: data.id });
     } catch (error) {

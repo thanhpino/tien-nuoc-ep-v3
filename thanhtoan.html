@@ -65,7 +65,7 @@
         const checkoutContent = document.getElementById('checkout-content');
         const thankYouMessage = document.getElementById('thank-you-message');
         const finalMessage = document.getElementById('final-message');
-
+        
         const cartData = localStorage.getItem('shoppingCart');
         const cart = cartData ? JSON.parse(cartData) : [];
         // Hiển thị giỏ hàng
@@ -89,7 +89,7 @@
             checkoutContent.innerHTML = '<p class="text-center text-slate-500">Giỏ nước của bạn đang trống. <a href="index.html" class="text-emerald-500 hover:underline">Quay lại mua sắm</a></p>';
         }
 
-        // === TÍCH HỢP PAYPAL BUTTONS ===
+        // Nút thanh toán PayPal
         paypal.Buttons({
             // 1. Gọi backend để tạo đơn hàng
             createOrder: async function() {
@@ -115,8 +115,7 @@
                         body: JSON.stringify({ orderID: data.orderID }),
                     });
                     const details = await response.json();
-
-                    // HIỂN THỊ THÔNG BÁO THÀNH CÔNG
+                    // Thông báo thành công
                     checkoutContent.classList.add('hidden');
                     thankYouMessage.classList.remove('hidden');
                     finalMessage.innerHTML = `Thanh toán thành công qua PayPal! Cảm ơn bạn đã tin tưởng Tiệm Nước Ép TMT.<br>Mã giao dịch của bạn là: ${details.id}`;
@@ -131,7 +130,7 @@
                 console.error("PayPal button error:", err);
                 alert("Đã có lỗi xảy ra với PayPal, vui lòng tải lại trang.");
             }
-        }).render('#paypal-button-container'); // Vẽ nút lên thẻ div đã tạo
+        }).render('#paypal-button-container'); 
 
         if (typeof lucide !== 'undefined') lucide.createIcons();
     });
