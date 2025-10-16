@@ -1,17 +1,19 @@
+// File: /api/create-checkout-session.js
 
-// Lệnh `npm install stripe` sẽ được Vercel tự động chạy
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 module.exports = async (req, res) => {
-    // Chỉ cho phép phương thức POST
     if (req.method !== 'POST') {
         res.setHeader('Allow', 'POST');
         return res.status(405).end('Method Not Allowed');
     }
+
     try {
         const { cart } = req.body;
 
-        // Chuyển đổi dữ liệu giỏ hàng của cậu thành định dạng mà Stripe yêu cầu
+        // DÒNG MỚI SỐ 1: In ra để xem giỏ hàng nhận được
+        console.log('--- Received Cart Data ---', JSON.stringify(cart, null, 2));
+
         const line_items = cart.map(item => {
             return {
                 price_data: {
@@ -19,25 +21,29 @@ module.exports = async (req, res) => {
                     product_data: {
                         name: item.name,
                     },
-                    unit_amount: item.price, // Stripe tính giá bằng đơn vị nhỏ nhất (xu)
+                    // Stripe yêu cầu giá phải là một số nguyên
+                    unit_amount: parseInt(item.price, 10),
                 },
                 quantity: item.quantity,
             };
         });
-        // Tạo một phiên thanh toán (Checkout Session)
+
+        // DÒNG MỚI SỐ 2: In ra để xem dữ liệu sẽ gửi cho Stripe
+        console.log('--- Sending to Stripe ---', JSON.stringify(line_items, null, 2));
+
         const session = await stripe.checkout.sessions.create({
-            payment_method_types: ['card'], // Cho phép thanh toán bằng thẻ
+            payment_method_types: ['card'],
             line_items: line_items,
             mode: 'payment',
-            // URL để chuyển khách về sau khi thanh toán thành công hoặc thất bại
             success_url: `${req.headers.origin}/thanhtoan.html?success=true`,
             cancel_url: `${req.headers.origin}/thanhtoan.html?canceled=true`,
         });
-        // Trả về ID của phiên để frontend có thể chuyển hướng
+
         res.status(200).json({ id: session.id });
 
     } catch (err) {
-        console.error(err);
+        // In ra lỗi chi tiết từ Stripe
+        console.error('--- Stripe Error ---', err);
         res.status(500).json({ statusCode: 500, message: err.message });
     }
 };
