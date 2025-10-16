@@ -77,22 +77,123 @@
 
     </div>
     <script>
+        // const formatCurrency = (number) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number).replace('₫', 'đ');
+        // const bodyBackgrounds = [
+        // 'https://images.pexels.com/photos/129731/pexels-photo-129731.jpeg',
+        // 'https://static.vecteezy.com/system/resources/previews/002/269/117/large_2x/seamless-pattern-with-oranges-fruit-on-a-blue-background-vector.jpg',
+        // 'https://images.pexels.com/photos/4099467/pexels-photo-4099467.jpeg',
+        // 'https://www.toptal.com/designers/subtlepatterns/uploads/watercolor.png'
+        // ];
+        // const setRandomBackground = () => {
+        //     const randomBodyBg = bodyBackgrounds[Math.floor(Math.random() * bodyBackgrounds.length)];
+        //     document.body.style.backgroundImage = `url('${randomBodyBg}')`;
+        //     document.body.style.backgroundSize = 'cover';
+        //     document.body.style.backgroundAttachment = 'fixed';
+        // };
+        // document.addEventListener('DOMContentLoaded', () => {
+        //     setRandomBackground();
+        //     const stripe = Stripe('pk_test_51SInKEHeBcBu7yC1ISPr3Lm3jUnXDsaOhpNqCdiQazkLm6XPTabel14X6057dc5qNyNBMqyp0RWyIjF2QxhbMbVm00NmqnXK2p')
+        //     const orderItemsContainer = document.getElementById('order-items');
+        //     const totalPriceElement = document.getElementById('total-price');
+        //     const confirmButton = document.getElementById('confirm-payment-button');
+        //     const checkoutContent = document.getElementById('checkout-content');
+        //     const thankYouMessage = document.getElementById('thank-you-message');
+        //     const finalMessage = document.getElementById('final-message');
+
+        //     // const ewalletButton = document.getElementById('ewallet-button');
+        //     // const codButton = document.getElementById('cod-button');
+        //     // const paymentMethods = document.querySelectorAll('.payment-method');
+
+        //     // let selectedPaymentMethod = null;
+
+        //     const cartData = localStorage.getItem('shoppingCart');
+        //     const cart = cartData ? JSON.parse(cartData) : [];
+        //     // Kiem tra trang thai sau khi thanh toan
+        //     const params = new URLSearchParams(window.location.search);
+        //     if (params.get('success')) {
+        //         checkoutContent.classList.add('hidden');
+        //         thankYouMessage.classList.remove('hidden');
+        //         finalMessage.innerHTML = "Thanh toán thành công! Cảm ơn bạn đã tin tưởng và lựa chọn Tiệm Nước Ép TMT.<br>Đơn nước của bạn đang được chuẩn bị.";
+        //         localStorage.removeItem('shoppingCart'); // Xóa giỏ hàng sau khi thành công
+        //     } else if (params.get('canceled')) {
+        //         finalMessage.innerHTML = "Đơn hàng đã bị hủy. Bạn có thể thử thanh toán lại.";
+        //         // Giữ nguyên giỏ hàng để khách thử lại
+        //     }
+        //     if (cart.length > 0) {
+        //         let total = 0;
+        //         cart.forEach(item => {
+        //             const itemHTML = `
+        //                 <div class="flex justify-between items-center">
+        //                     <div>
+        //                         <p class="font-semibold">${item.name} <span class="text-slate-500 font-normal">x${item.quantity}</span></p>
+        //                         <p class="text-sm text-slate-500">${formatCurrency(item.price)}</p>
+        //                     </div>
+        //                     <p class="font-semibold">${formatCurrency(item.price * item.quantity)}</p>
+        //                 </div>
+        //             `;
+        //             orderItemsContainer.innerHTML += itemHTML;
+        //             total += item.price * item.quantity;
+        //         });
+        //         totalPriceElement.textContent = formatCurrency(total);
+        //     } else {
+        //         checkoutContent.innerHTML = '<p class="text-center text-slate-500">Giỏ nước của bạn đang trống. <a href="index.html" class="text-emerald-500 hover:underline">Quay lại mua sắm</a></p>';
+        //     }
+        //     // Thanh toán
+        //     confirmButton.addEventListener('click', async () => {
+        //     confirmButton.disabled = true;
+        //     confirmButton.textContent = 'Đang xử lý...';
+        //     // Gọi đến backend
+        //     const response = await fetch('/api/create-checkout-session', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify({ cart: cart }),
+        //     });
+        //     const session = await response.json();
+        //     // ewalletButton.addEventListener('click', () => {
+        //     //     selectedPaymentMethod = 'ewallet';
+        //     //     updateSelectionUI(ewalletButton);
+        //     // });
+
+        //     // codButton.addEventListener('click', () => {
+        //     //     selectedPaymentMethod = 'cod';
+        //     //     updateSelectionUI(codButton);
+        //     // });
+
+        //     // const updateSelectionUI = (selectedButton) => {
+        //     //     paymentMethods.forEach(button => {
+        //     //         button.classList.remove('selected-payment');
+        //     //         button.querySelector('[data-lucide="check-circle-2"]').classList.add('hidden');
+        //     //     });
+        //     //     selectedButton.classList.add('selected-payment');
+        //     //     selectedButton.querySelector('[data-lucide="check-circle-2"]').classList.remove('hidden');
+        //     //     confirmButton.disabled = false;
+        //     // };
+
+        // //     
+        //     const result = await stripe.redirectToCheckout({
+        //             sessionId: session.id,
+        //         });
+
+        //         if (result.error) {
+        //             // Nếu có lỗi, hiển thị cho người dùng
+        //             alert(result.error.message);
+        //             confirmButton.disabled = false;
+        //             confirmButton.textContent = 'Hoàn tất đặt nước';
+        //         }
+        //     });
+
+        //     if (typeof lucide !== 'undefined') {
+        //         lucide.createIcons();
+        //     }
+        // });
         const formatCurrency = (number) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number).replace('₫', 'đ');
-        const bodyBackgrounds = [
-        'https://images.pexels.com/photos/129731/pexels-photo-129731.jpeg',
-        'https://static.vecteezy.com/system/resources/previews/002/269/117/large_2x/seamless-pattern-with-oranges-fruit-on-a-blue-background-vector.jpg',
-        'https://images.pexels.com/photos/4099467/pexels-photo-4099467.jpeg',
-        'https://www.toptal.com/designers/subtlepatterns/uploads/watercolor.png'
-        ];
-        const setRandomBackground = () => {
-            const randomBodyBg = bodyBackgrounds[Math.floor(Math.random() * bodyBackgrounds.length)];
-            document.body.style.backgroundImage = `url('${randomBodyBg}')`;
-            document.body.style.backgroundSize = 'cover';
-            document.body.style.backgroundAttachment = 'fixed';
-        };
-        document.addEventListener('DOMContentLoaded', () => {
-            setRandomBackground();
-            const stripe = Stripe('pk_test_51SInKEHeBcBu7yC1ISPr3Lm3jUnXDsaOhpNqCdiQazkLm6XPTabel14X6057dc5qNyNBMqyp0RWyIjF2QxhbMbVm00NmqnXK2p')
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Thay bằng Publishable Key của cậu
+            const stripe = Stripe('pk_test_YOUR_PUBLISHABLE_KEY');
+
             const orderItemsContainer = document.getElementById('order-items');
             const totalPriceElement = document.getElementById('total-price');
             const confirmButton = document.getElementById('confirm-payment-button');
@@ -100,15 +201,10 @@
             const thankYouMessage = document.getElementById('thank-you-message');
             const finalMessage = document.getElementById('final-message');
 
-            // const ewalletButton = document.getElementById('ewallet-button');
-            // const codButton = document.getElementById('cod-button');
-            // const paymentMethods = document.querySelectorAll('.payment-method');
-
-            // let selectedPaymentMethod = null;
-
             const cartData = localStorage.getItem('shoppingCart');
             const cart = cartData ? JSON.parse(cartData) : [];
-            // Kiem tra trang thai sau khi thanh toan
+
+            // --- KIỂM TRA TRẠNG THÁI SAU KHI THANH TOÁN ---
             const params = new URLSearchParams(window.location.search);
             if (params.get('success')) {
                 checkoutContent.classList.add('hidden');
@@ -119,14 +215,14 @@
                 finalMessage.innerHTML = "Đơn hàng đã bị hủy. Bạn có thể thử thanh toán lại.";
                 // Giữ nguyên giỏ hàng để khách thử lại
             }
-            if (cart.length > 0) {
+
+            if (cart.length > 0 && !params.get('success')) {
                 let total = 0;
                 cart.forEach(item => {
                     const itemHTML = `
                         <div class="flex justify-between items-center">
                             <div>
                                 <p class="font-semibold">${item.name} <span class="text-slate-500 font-normal">x${item.quantity}</span></p>
-                                <p class="text-sm text-slate-500">${formatCurrency(item.price)}</p>
                             </div>
                             <p class="font-semibold">${formatCurrency(item.price * item.quantity)}</p>
                         </div>
@@ -135,44 +231,32 @@
                     total += item.price * item.quantity;
                 });
                 totalPriceElement.textContent = formatCurrency(total);
-            } else {
+                confirmButton.disabled = false; // Bỏ qua chọn phương thức, mặc định là Stripe
+            } else if (!params.get('success')) {
                 checkoutContent.innerHTML = '<p class="text-center text-slate-500">Giỏ nước của bạn đang trống. <a href="index.html" class="text-emerald-500 hover:underline">Quay lại mua sắm</a></p>';
             }
-            // Thanh toán
+
+            // Xóa phần chọn phương thức thanh toán cũ nếu muốn
+            // document.querySelector('.space-y-4').innerHTML = '<p class="text-center font-semibold">Bạn sẽ được chuyển đến cổng thanh toán bảo mật của Stripe.</p>';
+
+            // --- SỰ KIỆN KHI NHẤN NÚT THANH TOÁN ---
             confirmButton.addEventListener('click', async () => {
-            confirmButton.disabled = true;
-            confirmButton.textContent = 'Đang xử lý...';
-            // Gọi đến backend
-            const response = await fetch('/api/create-checkout-session', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ cart: cart }),
-            });
-            const session = await response.json();
-            // ewalletButton.addEventListener('click', () => {
-            //     selectedPaymentMethod = 'ewallet';
-            //     updateSelectionUI(ewalletButton);
-            // });
+                confirmButton.disabled = true;
+                confirmButton.textContent = 'Đang xử lý...';
 
-            // codButton.addEventListener('click', () => {
-            //     selectedPaymentMethod = 'cod';
-            //     updateSelectionUI(codButton);
-            // });
+                // Gọi đến backend (serverless function) của mình
+                const response = await fetch('/api/create-checkout-session', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ cart: cart }),
+                });
 
-            // const updateSelectionUI = (selectedButton) => {
-            //     paymentMethods.forEach(button => {
-            //         button.classList.remove('selected-payment');
-            //         button.querySelector('[data-lucide="check-circle-2"]').classList.add('hidden');
-            //     });
-            //     selectedButton.classList.add('selected-payment');
-            //     selectedButton.querySelector('[data-lucide="check-circle-2"]').classList.remove('hidden');
-            //     confirmButton.disabled = false;
-            // };
+                const session = await response.json();
 
-        //     
-            const result = await stripe.redirectToCheckout({
+                // Chuyển hướng khách hàng đến trang thanh toán của Stripe
+                const result = await stripe.redirectToCheckout({
                     sessionId: session.id,
                 });
 
