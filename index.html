@@ -98,17 +98,17 @@
     <script>
         // SẢN PHẨM
         const products = [
-            { id: 1, name: 'Nước ép Táo', price: 45000, desc: 'Giàu vitamin và chất xơ.', image: 'images/tao.jpg', nutrition: { vitC: 15, fiber: 40, antiox: 20 } },
-            { id: 2, name: 'Nước ép Xoài', price: 50000, desc: 'Vị ngọt nhiệt đới.', image: 'images/xoai.jpg', nutrition: { vitC: 60, fiber: 20, antiox: 40 } },
-            { id: 3, name: 'Nước ép Đu Đủ', price: 40000, desc: 'Làn da sáng mịn, khoẻ mạnh.', image: 'images/dudu.jpg', nutrition: { vitC: 80, fiber: 25, antiox: 30 } },
-            { id: 4, name: 'Nước ép Dưa Lưới', price: 55000, desc: 'Thanh mát, giải nhiệt.', image: 'images/dualuoi.jpg', nutrition: { vitC: 30, fiber: 10, antiox: 20 } },
-            { id: 5, name: 'Nước ép Dưa Hấu', price: 40000, desc: 'Hoàn hảo cho ngày nóng.', image: 'images/duahau.jpg', nutrition: { vitC: 10, fiber: 5, antiox: 25 } },
-            { id: 6, name: 'Nước ép Cam', price: 45000, desc: 'Giàu vitamin C.', image: 'images/cam.jpg', nutrition: { vitC: 90, fiber: 20, antiox: 15 } },
-            { id: 7, name: 'Nước ép Chanh Dây', price: 50000, desc: 'Giúp tiêu hóa và làm đẹp da.', image: 'images/chanhday.jpg', nutrition: { vitC: 50, fiber: 35, antiox: 50 } },
-            { id: 8, name: 'Nước ép Cà Rốt', price: 40000, desc: 'Tốt cho mắt và da.', image: 'images/carot.jpg', nutrition: { vitC: 10, fiber: 30, antiox: 60 } },
-            { id: 9, name: 'Nước ép Dứa', price: 45000, desc: 'Hỗ trợ tiêu hóa và giảm viêm.', image: 'images/dua.jpg', nutrition: { vitC: 70, fiber: 25, antiox: 35 } },
-            { id: 10, name: 'Nước ép Việt Quất', price: 45000, desc: 'Việt Quất ngon nghẻ.', image: 'images/vietquat.jpg', nutrition: { vitC: 20, fiber: 15, antiox: 90 } },
-            { id: 11, name: 'Mix tùy chọn', price: 90000, desc: 'Chọn 2 loại nước ép bất kỳ.', image: 'images/mix.jpg', nutrition: { vitC: 50, fiber: 30, antiox: 40 } },
+            { id: 1, name: 'Nước ép Táo', price: 45000, desc: 'Giàu vitamin và chất xơ.', image: 'tao.jpg', nutrition: { vitC: 15, fiber: 40, antiox: 20 } },
+            { id: 2, name: 'Nước ép Xoài', price: 50000, desc: 'Vị ngọt nhiệt đới.', image: 'xoai.jpg', nutrition: { vitC: 60, fiber: 20, antiox: 40 } },
+            { id: 3, name: 'Nước ép Đu Đủ', price: 40000, desc: 'Làn da sáng mịn, khoẻ mạnh.', image: 'dudu.jpg', nutrition: { vitC: 80, fiber: 25, antiox: 30 } },
+            { id: 4, name: 'Nước ép Dưa Lưới', price: 55000, desc: 'Thanh mát, giải nhiệt.', image: 'dualuoi.jpg', nutrition: { vitC: 30, fiber: 10, antiox: 20 } },
+            { id: 5, name: 'Nước ép Dưa Hấu', price: 40000, desc: 'Hoàn hảo cho ngày nóng.', image: 'duahau.jpg', nutrition: { vitC: 10, fiber: 5, antiox: 25 } },
+            { id: 6, name: 'Nước ép Cam', price: 45000, desc: 'Giàu vitamin C.', image: 'cam.jpg', nutrition: { vitC: 90, fiber: 20, antiox: 15 } },
+            { id: 7, name: 'Nước ép Chanh Dây', price: 50000, desc: 'Giúp tiêu hóa và làm đẹp da.', image: 'chanhday.jpg', nutrition: { vitC: 50, fiber: 35, antiox: 50 } },
+            { id: 8, name: 'Nước ép Cà Rốt', price: 40000, desc: 'Tốt cho mắt và da.', image: 'carot.jpg', nutrition: { vitC: 10, fiber: 30, antiox: 60 } },
+            { id: 9, name: 'Nước ép Dứa', price: 45000, desc: 'Hỗ trợ tiêu hóa và giảm viêm.', image: 'dua.jpg', nutrition: { vitC: 70, fiber: 25, antiox: 35 } },
+            { id: 10, name: 'Nước ép Việt Quất', price: 45000, desc: 'Việt Quất ngon nghẻ.', image: 'vietquat.jpg', nutrition: { vitC: 20, fiber: 15, antiox: 90 } },
+            { id: 11, name: 'Mix tùy chọn', price: 90000, desc: 'Chọn 2 loại nước ép bất kỳ.', image: 'mix.jpg', nutrition: { vitC: 50, fiber: 30, antiox: 40 } },
         ];
         let cart = [];
         const formatCurrency = (number) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number).replace('₫', 'đ');
@@ -415,3 +415,4 @@
 </body>
 
 </html>
+
