@@ -193,7 +193,7 @@
             const totals = cart.reduce((acc, item) => {
                 const product = products.find(p => p.id === item.id);
                 // Nếu là mix juice, lấy dinh dưỡng trung bình
-                const nutrition = product ? product.nutrition : products.find(p=>p.id===11).nutrition; 
+                const nutrition = product ? product.nutrition : products.find(p=>p.id===20).nutrition; 
                 acc.vitC += (nutrition.vitC * item.quantity);
                 acc.fiber += (nutrition.fiber * item.quantity);
                 acc.antiox += (nutrition.antiox * item.quantity);
@@ -272,7 +272,7 @@
             renderCart();
         };
         window.addToCart = (productId) => {
-            if (productId === 11) {
+            if (productId === 20) {
                 openMixModal();
                 return;
             }
@@ -297,7 +297,7 @@
                     </div>
                     <p class="text-gray-500 mb-6">Vui lòng chọn <span class="font-bold text-emerald-600">2 loại nước ép</span> để mix.</p>
                     <div id="mix-options-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 overflow-y-auto pr-2 flex-grow">
-                        ${products.filter(p => p.id !== 11).map(p => `
+                        ${products.filter(p => p.id !== 20).map(p => `
                             <button class="mix-option text-left p-3 border-2 rounded-lg transition-all duration-200" data-name="${p.name}" data-image="${p.image}">
                                 <img src="${p.image}" class="w-full h-20 object-cover rounded mb-2 pointer-events-none">
                                 <span class="font-semibold pointer-events-none">${p.name}</span>
@@ -335,7 +335,7 @@
                 if (selectedOptions.length === 2) {
                     const name1 = selectedOptions[0].dataset.name;
                     const name2 = selectedOptions[1].dataset.name;
-                    const mixedJuice = { id: Date.now(), name: `Mix: ${name1} & ${name2}`, price: 90000, quantity: 1, nutrition: products.find(p=>p.id===11).nutrition };
+                    const mixedJuice = { id: Date.now(), name: `Mix: ${name1} & ${name2}`, price: 90000, quantity: 1, nutrition: products.find(p=>p.id===20).nutrition };
                     cart.push(mixedJuice);
                     renderCart();
                     closeMixModal();
