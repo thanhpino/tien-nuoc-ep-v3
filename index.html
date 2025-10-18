@@ -35,10 +35,9 @@
 </head>
 <body class="bg-gray-50 text-gray-800">
 
-    <button id="lucky-wheel-button" class="fixed bottom-5 right-5 bg-amber-400 text-yellow-900 font-bold p-4 rounded-full shadow-lg z-40 hover:bg-amber-500 transition-transform hover:scale-110">
-        <i data-lucide="gift" class="w-8 h-8"></i>
+    <button id="contact-button" class="fixed bottom-5 right-5 bg-emerald-500 text-white font-bold p-4 rounded-full shadow-lg z-40 hover:bg-emerald-600 transition-transform hover:scale-110" style="animation: pulse 2s infinite;">
+        <i data-lucide="phone" class="w-8 h-8"></i>
     </button>
-
     <div class="container mx-auto p-4 sm:p-6 lg:p-8">
         <header class="text-center mb-12">
             <h1 class="text-4xl md:text-5xl font-bold text-emerald-600">Tiệm Nước Ép TMT</h1>
@@ -93,18 +92,37 @@
     </div>
     <div id="mix-modal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 hidden z-50"></div>
     <div id="quiz-modal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 hidden z-50"></div>
-    <div id="wheel-modal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 hidden z-50"></div>
+    <div id="contact-modal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center p-4 hidden z-50">
+        <div class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-sm text-center">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Bạn cần hỗ trợ?</h2>
+                <button onclick="closeContactModal()" class="text-gray-400 hover:text-gray-600"><i data-lucide="x" class="w-6 h-6"></i></button>
+            </div>
+            <p class="text-gray-500 mb-6">Đừng ngần ngại, hãy liên hệ với mình nhé:3</p>
+            <div class="space-y-4">
+                <a href="tel:0932013424" class="flex items-center justify-center w-full bg-emerald-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-600 transition-colors">
+                    <i data-lucide="phone" class="w-5 h-5 mr-3"></i> Gọi ngay: 0932 013 424
+                </a>
+                <a href="https://zalo.me/0932013424" target="_blank" class="flex items-center justify-center w-full bg-blue-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-600 transition-colors">
+                    <i data-lucide="message-circle" class="w-5 h-5 mr-3"></i> Chat qua Zalo
+                </a>
+                <a href="https://www.facebook.com/tuyen.tu.12979431" target="_blank" class="flex items-center justify-center w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-indigo-700 transition-colors">
+                    <i data-lucide="facebook" class="w-5 h-5 mr-3"></i> Ghé thăm Fanpage
+                </a>
+            </div>
+        </div>
+    </div>
     <footer class="text-center my-12 text-gray-400"><p>&copy; 2025 Tiệm Nước Ép TMT. Thiết kế bởi Trương Minh Thành :3</p></footer>
     <script>
         // SẢN PHẨM
         const products = [
-            { id: 1, name: 'Nước ép Táo', price: 45000, desc: 'Giàu vitamin và chất xơ.', image: 'images/tao.jpg', nutrition: { vitC: 15, fiber: 40, antiox: 20 } },
+            { id: 1, name: 'Nước ép Táo', price: 45000, salePrice: 22500, desc: 'Giàu vitamin và chất xơ.', image: 'images/tao.jpg', nutrition: { vitC: 15, fiber: 40, antiox: 20 } },
             { id: 2, name: 'Nước ép Xoài', price: 50000, desc: 'Vị ngọt nhiệt đới.', image: 'images/xoai.jpg', nutrition: { vitC: 60, fiber: 20, antiox: 40 } },
             { id: 3, name: 'Nước ép Đu Đủ', price: 40000, desc: 'Làn da sáng mịn, khoẻ mạnh.', image: 'images/dudu.jpg', nutrition: { vitC: 80, fiber: 25, antiox: 30 } },
             { id: 4, name: 'Nước ép Dưa Lưới', price: 55000, desc: 'Thanh mát, giải nhiệt.', image: 'images/dualuoi.jpg', nutrition: { vitC: 30, fiber: 10, antiox: 20 } },
             { id: 5, name: 'Nước ép Dưa Hấu', price: 40000, desc: 'Hoàn hảo cho ngày nóng.', image: 'images/duahau.jpg', nutrition: { vitC: 10, fiber: 5, antiox: 25 } },
             { id: 6, name: 'Nước ép Cam', price: 45000, desc: 'Giàu vitamin C.', image: 'images/cam.jpg', nutrition: { vitC: 90, fiber: 20, antiox: 15 } },
-            { id: 7, name: 'Nước ép Chanh Dây', price: 50000, desc: 'Giúp tiêu hóa và làm đẹp da.', image: 'images/chanhday.jpg', nutrition: { vitC: 50, fiber: 35, antiox: 50 } },
+            { id: 7, name: 'Nước ép Chanh Dây', price: 50000, salePrice: 23000, desc: 'Giúp tiêu hóa và làm đẹp da.', image: 'images/chanhday.jpg', nutrition: { vitC: 50, fiber: 35, antiox: 50 } },
             { id: 8, name: 'Nước ép Cà Rốt', price: 40000, desc: 'Tốt cho mắt và da.', image: 'images/carot.jpg', nutrition: { vitC: 10, fiber: 30, antiox: 60 } },
             { id: 9, name: 'Nước ép Dứa', price: 45000, desc: 'Hỗ trợ tiêu hóa và giảm viêm.', image: 'images/dua.jpg', nutrition: { vitC: 70, fiber: 25, antiox: 35 } },
             { id: 10, name: 'Nước ép Việt Quất', price: 45000, desc: 'Việt Quất ngon nghẻ.', image: 'images/vietquat.jpg', nutrition: { vitC: 20, fiber: 15, antiox: 90 } },
@@ -183,20 +201,29 @@
         };
         // Hàm renderProducts
         window.renderProducts = () => {
-             productGrid.innerHTML = products.map(product => `
-                <div class="group bg-white/80 backdrop-blur-md rounded-2xl shadow-lg ring-1 ring-black ring-opacity-5 ...">
-                    <div class="overflow-hidden"><img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover product-image-zoom"></div>
+            productGrid.innerHTML = products.map(product => {
+                const priceHTML = product.salePrice
+                    ?   `<div>
+                            <span class="text-lg font-semibold text-red-600">${formatCurrency(product.salePrice)}</span>
+                            <span class="text-sm font-light text-gray-500 line-through ml-2">${formatCurrency(product.price)}</span>
+                        </div>`
+                    :   `<span class="text-lg font-semibold text-emerald-600">${formatCurrency(product.price)}</span>`;
+                return `
+                <div class="group bg-white/80 backdrop-blur-md rounded-2xl shadow-lg ring-1 ring-black ring-opacity-5 flex flex-col">
+                    <div class="overflow-hidden rounded-t-2xl">
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover product-image-zoom">
+                    </div>
                     <div class="p-5 flex flex-col flex-grow">
                         <h3 class="text-xl font-bold text-gray-800">${product.name}</h3>
                         <p class="text-gray-500 mt-2 flex-grow">${product.desc}</p>
                         <div class="flex justify-between items-center mt-4">
-                            <span class="text-lg font-semibold text-emerald-600">${formatCurrency(product.price)}</span>
+                            ${priceHTML}
                             <button onclick="addToCart(${product.id})" class="bg-emerald-50 text-emerald-600 font-semibold px-4 py-2 rounded-lg hover:bg-emerald-100 transition-colors duration-200">Thêm vào giỏ</button>
                         </div>
                     </div>
-                </div>`).join('');
+                </div>`;
+            }).join('');
         };
-
         // Hàm renderCart
         window.renderCart = () => {
             if (cart.length === 0) {
@@ -241,11 +268,12 @@
                 return;
             }
             const product = products.find(p => p.id === productId);
+            const priceToAdd = product.salePrice || product.price;
             const cartItem = cart.find(item => item.id === productId);
             if (cartItem) {
                 cartItem.quantity++;
             } else {
-                cart.push({ ...product, quantity: 1 });
+                cart.push({ ...product, price: priceToAdd, quantity: 1 });
             }
             renderCart();
         };
@@ -367,34 +395,20 @@
         };
         window.closeQuizModal = () => document.getElementById('quiz-modal').classList.add('hidden');
 
-        // --- Logic Vòng quay ---
-        window.openWheelModal = () => {
-            const wheelModalContainer = document.getElementById('wheel-modal');
-            const lastSpin = local.Storage.getItem('lastSpinDate'), today = new Date().toDateString(), canSpin = lastSpin !== today;
-            wheelModalContainer.innerHTML = `
-                <div class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md relative"<>button onclick="closeWheelModal()" class"absolute top-4 right-4 text-gray-400 hover:text-gray-600"><i data-lucide="x" class="w-6 h-6"></i></button><h2 class="text-2xl font-bold text-center text-gray-800 mb-4">Vòng Quay May Mắn</h2><div class="flex jutify-center items-center my-4 relative"><canvas id="canvas" width="300"height="300"></canvas><img src="https://i.imgur.com/8zV6f6k.png" class="absolute h-12 pointer-events-none"></div><button id="spin-button" class="w-full font-bold py-3 rounded-lg transition-colors" ${!canSpin ? 'disabled' : ''}>${canSpin ? 'QUAY NGAY!' : 'Hẹn bạn ngày mai nhé!'}</button><p id="wheel-result" class="text-center font-semibold text-emerald-600 mt-4 h-6"></p></div>`;
-            wheelModalContainer.classList.remove('hidden');
+        // Logic Modal Liên hệ
+        const contactModal = document.getElementById('contact-modal');
+        window.openContactModal = () => {
+            contactModal.classList.remove('hidden');
             lucide.createIcons();
-            if (canSpin) {
-                let theWeel = new Winwheel({'numSegments': 6, 'outerRadius': 145, 'textFontSize': 14, 'segments': [{'fillStyle': '#fde047', 'text': 'Giảm 10%'}, {'fillStyle': '#f9fafb', 'text': 'Chúc may mắn'}, {'fillStyle': '#dcfce7', 'text': 'Free Ship'}, {'fillStyle': '#fde047', 'text': 'Tặng Bánh'}, {'fillStyle': '#f9fafb', 'text': 'Chúc may mắn'}, {'fillStyle': '#dcfce7', 'text': 'Giảm 5%'}], 'animation': {'type': 'spinToStop', 'duration': 5, 'spins': 8, 'callbackFinished': alertPrize}});
-                document.getElementById('spin-button').onclick = () => { theWheel.startAnimation(); document.getElementById('spin-button').disabled=true;};
-                    theWeel.startAnimation();
-                    document.getElementById('spin-button').disabled = true;
-                }
-                document.getElementById('spin-button').className += (canSpin ? ' bg-amber-400 hover:bg-amber-500' : 'bg-gray-400');
-        };
-        window.alertPrize = (indicatedSegment) => {
-            localStorage.setItem('lastSpinDate', new Date().toDateString());
-            document.getElementById('wheel-result').textContent = `Chúc mừng! Bạn đã trúng "${indicatedSegment.text}"`;
-            alert(`Chúc mừng! Bạn đã trúng "${indicatedSegment.text}".\nHãy báo cho nhân viên để được áp dụng ưu đãi nhé!`);
-        };
-        window.closeWheelModal = () => document.getElementById('wheel-modal').classList.add('hidden');
-
+        }
+        window.closeContactModal = () => {
+            contactModal.classList.add('hidden');
+        }
         // --- Event Listener chính ---
         document.addEventListener('DOMContentLoaded', () => {
             setRandomBackgrounds();
             const showQuizButton = document.getElementById('show-quiz-button');
-            const luckyWheelButton = document.getElementById('lucky-wheel-button');
+            const contactButton = document.getElementById('contact-button');
             renderProducts();
             renderCart();
             showQuizButton.addEventListener('click', () => {
@@ -402,7 +416,7 @@
                 renderQuizStep(0);
                 document.getElementById('quiz-modal').classList.remove('hidden');
             });
-            luckyWheelButton.addEventListener('click', openWheelModal);
+            contactButton.addEventListener('click', openContactModal);
             checkoutButton.addEventListener('click', () => {
                 if (cart.length > 0) {
                     localStorage.setItem('shoppingCart', JSON.stringify(cart));

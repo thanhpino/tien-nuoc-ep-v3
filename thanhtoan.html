@@ -42,11 +42,55 @@
                         <span id="total-price" class="text-emerald-600">0đ</span>
                     </div>
                 </div>
-                <h2 class="text-2xl font-semibold mb-6 border-b pb-4 text-slate-700">Phương thức thanh toán</h2>
-                <div id="paypal-button-container"></div>
+                <h2 class="text-2xl font-semibold mb-6 border-b pb-4 text-slate-700">Chọn phương thức thanh toán</h2>
+                <div class="space-y-4 mb-8">
+                    <button data-method="cod" class="payment-method w-full flex justify-between items-center p-4 border-2 rounded-lg transition-all text-left">
+                        <div class="flex items-center">
+                            <i data-lucide="truck" class="w-8 h-8 mr-4 text-slate-500 flex-shrink-0"></i>
+                            <div>
+                                <p class="font-semibold">Thanh toán khi nhận hàng (COD)</p>
+                                <p class="text-sm text-slate-500">Thanh toán bằng tiền mặt khi shipper giao nước.</p>
+                            </div>
+                        </div>
+                        <i data-lucide="check-circle-2" class="w-6 h-6 text-emerald-500 hidden ml-4"></i>
+                    </button>
+                    <button data-method="momo" class="payment-method w-full flex justify-between items-center p-4 border-2 rounded-lg transition-all text-left">
+                        <div class="flex items-center">
+                            <img src="images/momoicon.png" class="w-8 h-8 mr-4"/>
+                            <div>
+                                <p class="font-semibold">Thanh toán qua Ví MoMo</p>
+                                <p class="text-sm text-slate-500">Quét mã QR để thanh toán (giả lập).</p>
+                            </div>
+                        </div>
+                        <i data-lucide="check-circle-2" class="w-6 h-6 text-emerald-500 hidden ml-4"></i>
+                    </button>
+                    <button data-method="zalopay" class="payment-method w-full flex justify-between items-center p-4 border-2 rounded-lg transition-all text-left">
+                        <div class="flex items-center">
+                            <img src="images/zaloicon.png" class="w-8 h-8 mr-4 rounded-md"/>
+                            <div>
+                                <p class="font-semibold">Thanh toán qua ZaloPay</p>
+                                <p class="text-sm text-slate-500">Thanh toán an toàn với ZaloPay.</p>
+                            </div>
+                        </div>
+                        <i data-lucide="check-circle-2" class="w-6 h-6 text-emerald-500 hidden ml-4"></i>
+                    </button>
+                    <button data-method="paypal" class="payment-method w-full flex justify-between items-center p-4 border-2 rounded-lg transition-all text-left">
+                        <div class="flex items-center">
+                            <i data-lucide="credit-card" class="w-8 h-8 mr-4 text-slate-500 flex-shrink-0"></i>
+                            <div>
+                                <p class="font-semibold">PayPal hoặc Thẻ quốc tế</p>
+                                <p class="text-sm text-slate-500">Sử dụng tài khoản PayPal hoặc thẻ Visa, Mastercard.</p>
+                            </div>
+                        </div>
+                        <i data-lucide="check-circle-2" class="w-6 h-6 text-emerald-500 hidden ml-4"></i>
+                    </button>
+                </div>
+                <div id="paypal-button-container" class="hidden"></div>
+                <button id="confirm-payment-button" class="w-full bg-emerald-500 text-white font-bold py-3 rounded-lg mt-6 hover:bg-emerald-600 transition-colors duration-300 shadow-md hidden" disabled>
+                    Hoàn tất đặt nước
+                </button>
             </div>
         </div>
-
         <div id="thank-you-message" class="hidden text-center p-10 bg-white rounded-2xl shadow-lg">
             <h1 class="text-4xl font-bold text-emerald-600 mb-4">Đặt nước thành công!</h1>
             <p id="final-message" class="text-slate-600 text-lg mb-8"></p>
@@ -65,30 +109,101 @@
         const checkoutContent = document.getElementById('checkout-content');
         const thankYouMessage = document.getElementById('thank-you-message');
         const finalMessage = document.getElementById('final-message');
-        
+
+        const paymentMethods = document.querySelectorAll('.payment-method');
+        const confirmButton = document.getElementById('confirm-payment-button');
+        const paypalContainer = document.getElementById('paypal-button-container');
+        const paymentSimulationModal = document.getElementById('payment-simulation-modal');
+        let selectedPaymentMethod = null;
+        let total = 0;        
         const cartData = localStorage.getItem('shoppingCart');
         const cart = cartData ? JSON.parse(cartData) : [];
         // Hiển thị giỏ hàng
-        if (cart.length > 0) {
-            let total = 0;
-            cart.forEach(item => {
-                const itemHTML = `
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <p class="font-semibold">${item.name} <span class="text-slate-500 font-normal">x${item.quantity}</span></p>
-                            <p class="text-sm text-slate-500">${formatCurrency(item.price)}</p>
-                        </div>
-                        <p class="font-semibold">${formatCurrency(item.price * item.quantity)}</p>
-                    </div>
-                `;
-                orderItemsContainer.innerHTML += itemHTML;
-                total += item.price * item.quantity;
-            });
-            totalPriceElement.textContent = formatCurrency(total);
-        } else {
-            checkoutContent.innerHTML = '<p class="text-center text-slate-500">Giỏ nước của bạn đang trống. <a href="index.html" class="text-emerald-500 hover:underline">Quay lại mua sắm</a></p>';
+        if (cart.length === 0){
+            checkoutContent.innerHTML = '<p class="text-center text-slate-500">Giỏ nước của bạn đang trống. <a href ="index.html" class "text-emerald-500 hover:underline">Quay lại mua sắm</a></p>';
+            return;
         }
+        cart.forEach(item => {
+            orderItemsContainer.innerHTML += `
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="font-semibold">${item.name} <span class="text-slate-500 font-normal">x${item.quantity}</span></p>
+                        <p class="text-sm text-slate-500">${formatCurrency(item.price)}</p>
+                    </div>
+                    <p class="font-semibold">${formatCurrency(item.price * item.quantity)}</p>
+                </div>
+            `;
+            total += item.price * item.quantity;
+        });
+        totalPriceElement.textContent = formatCurrency(total);
+        // Logic hiển thị màn hình cảm ơn.
+        const showThankYouScreen = (paymentMethodName, transactionId = null) => {
+            checkoutContent.classList.add('hidden');
+            thankYouMessage.classList.remove('hidden');
+            let message = `Đơn hàng của bạn đã được xác nhận qua ${paymentMethodName}! Mình sẽ chuẩn bị và giao hàng sớm nhất.`;
+            if (transactionId) {
+                message = `Thanh toán thành công qua ${paymentMethodName}! Cảm ơn bạn đã tin tưởng Tiệm Nước Ép TMT.<br>Mã giao dịch của bạn là: ${transactionId}`;
+            } else if (paymentMethodName === 'COD') {
+                message = `Đơn nước của bạn đã được xác nhận! Mình sẽ chuẩn bị và giao hàng sớm nhất.<br>Vui lòng chuẩn bị <strong>${formatCurrency(total)}</strong> để thanh toán khi nhận hàng.`;
+            }
+            finalMessage.innerHTML = message;
+            localStorage.removeItem('shoppingCart');
+        };
+        // Logic giả lập
+        const openSimulationModal = (method, amount) => {
+            const logoEl = document.getElementById('qr-payment-logo');
+            const methodEl = document.getElementById('qr-payment-method');
+            document.getElementById('qr-total-amount').textContent = formatCurrency(amount);
 
+            if (method === 'momo') {
+                logoEl.src = 'images/momoicon.png';
+                methodEl.textContent = 'Ví MoMo';
+            } else if (method === 'zalopay') {
+                logoEl.src = 'images/zaloicon.png';
+                methodEl.textContent = 'ZaloPay';
+            }
+            paymentSimulationModal.classList.remove('hidden');
+            lucide.createIcons();
+            let countdown = 5;
+            const timerEl = document.getElementById('countdown-timer');
+            timerEl.textContent = countdown;
+            const interval = setInterval(() => {
+                countdown--;
+                timerEl.textContent = countdown;
+                if (countdown <= 0) {
+                    clearInterval(interval);
+                    closeSimulationModal();
+                    showThankYouScreen(method === 'momo' ? 'Ví MoMo' : 'ZaloPay');
+                }
+            }, 1000);
+        };
+        window.closeSimulationModal = () => paymentSimulationModal.classList.add('hidden');
+        // Xử lý chọn
+        paymentMethods.forEach(button => {
+            button.addEventListener('click', () => {
+                selectedPaymentMethod = button.dataset.method;
+                paymentMethods.forEach(btn => btn.classList.remove('selected-payment'));
+                button.classList.add('selected-payment');
+                confirmButton.disabled = false;
+
+                if (selectedPaymentMethod === 'paypal') {
+                    confirmButton.classList.add('hidden');
+                    paypalContainer.classList.remove('hidden');
+                } else {
+                    paypalContainer.classList.add('hidden');
+                    confirmButton.classList.remove('hidden');
+                }
+            });
+        });
+        // Xử lý nút xác nhận thanh toán
+        // --- 6. Xử lý nút "Hoàn tất đặt nước" ---
+        confirmButton.addEventListener('click', () => {
+            if (selectedPaymentMethod === 'cod') {
+                showThankYouScreen('COD');
+            } else if (selectedPaymentMethod === 'momo' || selectedPaymentMethod === 'zalopay') {
+                openSimulationModal(selectedPaymentMethod, total);
+            }
+        });
         // Nút thanh toán PayPal
         paypal.Buttons({
             // 1. Gọi backend để tạo đơn hàng
@@ -134,117 +249,28 @@
 
         if (typeof lucide !== 'undefined') lucide.createIcons();
     });
-        // const formatCurrency = (number) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number).replace('₫', 'đ');
-        // const bodyBackgrounds = [
-        // 'https://images.pexels.com/photos/129731/pexels-photo-129731.jpeg',
-        // 'https://static.vecteezy.com/system/resources/previews/002/269/117/large_2x/seamless-pattern-with-oranges-fruit-on-a-blue-background-vector.jpg',
-        // 'https://images.pexels.com/photos/4099467/pexels-photo-4099467.jpeg',
-        // 'https://www.toptal.com/designers/subtlepatterns/uploads/watercolor.png'
-        // ];
-        // const setRandomBackground = () => {
-        //     const randomBodyBg = bodyBackgrounds[Math.floor(Math.random() * bodyBackgrounds.length)];
-        //     document.body.style.backgroundImage = `url('${randomBodyBg}')`;
-        //     document.body.style.backgroundSize = 'cover';
-        //     document.body.style.backgroundAttachment = 'fixed';
-        // };
-        // document.addEventListener('DOMContentLoaded', () => {
-        //     setRandomBackground();
-        //     const stripe = Stripe('pk_test_51SInKEHeBcBu7yC1ISPr3Lm3jUnXDsaOhpNqCdiQazkLm6XPTabel14X6057dc5qNyNBMqyp0RWyIjF2QxhbMbVm00NmqnXK2p')
-        //     const orderItemsContainer = document.getElementById('order-items');
-        //     const totalPriceElement = document.getElementById('total-price');
-        //     const confirmButton = document.getElementById('confirm-payment-button');
-        //     const checkoutContent = document.getElementById('checkout-content');
-        //     const thankYouMessage = document.getElementById('thank-you-message');
-        //     const finalMessage = document.getElementById('final-message');
+    </script>
+    <div id="payment-simulation-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 hidden z-50 transition-opacity duration-300">
+    <div class="bg-white rounded-2xl shadow-xl p-6 sm:p-8 w-full max-w-sm text-center transform scale-95 transition-transform duration-300">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-bold text-gray-800">Xác nhận thanh toán</h2>
+            <button onclick="closeSimulationModal()" class="text-gray-400 hover:text-gray-600"><i data-lucide="x" class="w-6 h-6"></i></button>
+        </div>
+        <div class="flex items-center justify-center space-x-2 mb-4">
+            <img id="qr-payment-logo" src="" class="w-8 h-8 rounded-md"/>
+            <p class="font-semibold text-lg" id="qr-payment-method">Ví MoMo</p>
+        </div>
+        <p class="text-gray-500 text-sm">Quét mã QR để hoàn tất thanh toán cho đơn hàng</p>
+        <p class="text-4xl font-bold text-emerald-600 my-3" id="qr-total-amount">0đ</p>
 
-        //     // const ewalletButton = document.getElementById('ewallet-button');
-        //     // const codButton = document.getElementById('cod-button');
-        //     // const paymentMethods = document.querySelectorAll('.payment-method');
-
-        //     // let selectedPaymentMethod = null;
-
-        //     const cartData = localStorage.getItem('shoppingCart');
-        //     const cart = cartData ? JSON.parse(cartData) : [];
-        //     // Kiem tra trang thai sau khi thanh toan
-        //     const params = new URLSearchParams(window.location.search);
-        //     if (params.get('success')) {
-        //         checkoutContent.classList.add('hidden');
-        //         thankYouMessage.classList.remove('hidden');
-        //         finalMessage.innerHTML = "Thanh toán thành công! Cảm ơn bạn đã tin tưởng và lựa chọn Tiệm Nước Ép TMT.<br>Đơn nước của bạn đang được chuẩn bị.";
-        //         localStorage.removeItem('shoppingCart'); // Xóa giỏ hàng sau khi thành công
-        //     } else if (params.get('canceled')) {
-        //         finalMessage.innerHTML = "Đơn hàng đã bị hủy. Bạn có thể thử thanh toán lại.";
-        //         // Giữ nguyên giỏ hàng để khách thử lại
-        //     }
-        //     if (cart.length > 0) {
-        //         let total = 0;
-        //         cart.forEach(item => {
-        //             const itemHTML = `
-        //                 <div class="flex justify-between items-center">
-        //                     <div>
-        //                         <p class="font-semibold">${item.name} <span class="text-slate-500 font-normal">x${item.quantity}</span></p>
-        //                         <p class="text-sm text-slate-500">${formatCurrency(item.price)}</p>
-        //                     </div>
-        //                     <p class="font-semibold">${formatCurrency(item.price * item.quantity)}</p>
-        //                 </div>
-        //             `;
-        //             orderItemsContainer.innerHTML += itemHTML;
-        //             total += item.price * item.quantity;
-        //         });
-        //         totalPriceElement.textContent = formatCurrency(total);
-        //     } else {
-        //         checkoutContent.innerHTML = '<p class="text-center text-slate-500">Giỏ nước của bạn đang trống. <a href="index.html" class="text-emerald-500 hover:underline">Quay lại mua sắm</a></p>';
-        //     }
-        //     // Thanh toán
-        //     confirmButton.addEventListener('click', async () => {
-        //     confirmButton.disabled = true;
-        //     confirmButton.textContent = 'Đang xử lý...';
-        //     // Gọi đến backend
-        //     const response = await fetch('/api/create-checkout-session', {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //         },
-        //         body: JSON.stringify({ cart: cart }),
-        //     });
-        //     const session = await response.json();
-        //     // ewalletButton.addEventListener('click', () => {
-        //     //     selectedPaymentMethod = 'ewallet';
-        //     //     updateSelectionUI(ewalletButton);
-        //     // });
-
-        //     // codButton.addEventListener('click', () => {
-        //     //     selectedPaymentMethod = 'cod';
-        //     //     updateSelectionUI(codButton);
-        //     // });
-
-        //     // const updateSelectionUI = (selectedButton) => {
-        //     //     paymentMethods.forEach(button => {
-        //     //         button.classList.remove('selected-payment');
-        //     //         button.querySelector('[data-lucide="check-circle-2"]').classList.add('hidden');
-        //     //     });
-        //     //     selectedButton.classList.add('selected-payment');
-        //     //     selectedButton.querySelector('[data-lucide="check-circle-2"]').classList.remove('hidden');
-        //     //     confirmButton.disabled = false;
-        //     // };
-
-        // //     
-        //     const result = await stripe.redirectToCheckout({
-        //             sessionId: session.id,
-        //         });
-
-        //         if (result.error) {
-        //             // Nếu có lỗi, hiển thị cho người dùng
-        //             alert(result.error.message);
-        //             confirmButton.disabled = false;
-        //             confirmButton.textContent = 'Hoàn tất đặt nước';
-        //         }
-        //     });
-
-        //     if (typeof lucide !== 'undefined') {
-        //         lucide.createIcons();
-        //     }
-        // });
-    </script>   
+        <div class="bg-gray-100 p-4 rounded-lg my-6">
+             <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://github.com/trantien-2004" class="w-48 h-48 mx-auto" alt="QR Code">
+        </div>
+        <p class="text-sm text-slate-500">
+            <i data-lucide="loader" class="inline-block w-4 h-4 animate-spin mr-2"></i>
+            Đây là màn hình giả lập, giao dịch sẽ tự động xác nhận sau <span id="countdown-timer" class="font-bold">5</span> giây...
+        </p>
+    </div>
+</div>
 </body>
 </html>
